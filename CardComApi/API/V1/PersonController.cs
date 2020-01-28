@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using AutoWrapper.Extensions;
 using AutoWrapper.Wrappers;
 using CardComApi.Contracts;
 using CardComApi.Data.Context;
+using CardComApi.Data.Dto.Requests;
+using CardComApi.Data.Dto.Responses;
 using CardComApi.Data.Entity;
 using CardComApi.Data.Managers;
 using Microsoft.AspNetCore.Http;
@@ -20,16 +23,30 @@ namespace CardComApi.API.V1
     {
         //private PersonContext _context
         private IPersonManager _personManager;
-        public PersonController(IPersonManager personManager)
+        private IMapper _mapper;
+        public PersonController(IPersonManager personManager,IMapper mapper)
         {
             _personManager = personManager;
+            _mapper = mapper;
         }
 
-        [HttpPost]
-        public async Task<ApiResponse> Post([FromBody] Person person)
+        [HttpGet]
+        public async Task<IEnumerable<GetPersonResponse>> Get()
         {
+            var persons = _personManager.GetAllAsync().Result;
+            //var p = persons.ToList();
+            var response = _mapper.Map<IEnumerable<GetPersonResponse>>(persons);
+            return response;
+        }
+
+
+        [HttpPost]
+        public async Task<ApiResponse> Post([FromBody] CreatePersonRequest request)
+        {
+
             if (ModelState.IsValid)
             {
+                var person = _mapper.Map<Person>(request);
                 return new ApiResponse("Record successfully created.", await _personManager.CreateAsync(person), Status201Created);
             }
             else
@@ -37,5 +54,6 @@ namespace CardComApi.API.V1
                 throw new ApiException(ModelState.AllErrors());
             }
         }
+
     }
 }

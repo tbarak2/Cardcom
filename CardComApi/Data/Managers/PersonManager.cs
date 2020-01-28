@@ -14,7 +14,7 @@ namespace CardComApi.Data.Managers
         private PersonContext _context;
         public PersonManager(PersonContext context)
         {
-            context = _context;
+            _context = context;
         }
         public async Task<int> CreateAsync(Person entity)
         {
@@ -28,9 +28,10 @@ namespace CardComApi.Data.Managers
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Person>> GetAllAsync()
+        public async Task<IEnumerable<Person>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            // return new Task<IEnumerable<Person>>(obj => { return _context.Person; }, 300);
+            return _context.Person;
         }
 
         public Task<Person> GetByIdAsync(object id)
