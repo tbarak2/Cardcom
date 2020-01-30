@@ -37,6 +37,7 @@ namespace CardComApi
             });
 
             //Add db context
+           // DbContextOptions<PersonContext> contextOptions = new DbContextOptionsBuilder<PersonContext>().UseInMemoryDatabase("Context").Options;
             services.AddDbContext<PersonContext>(options =>
                 options.UseSqlite(Configuration["ConnectionStrings:CardComDbConnection"]));
             services.AddTransient<IPersonManager, PersonManager>();

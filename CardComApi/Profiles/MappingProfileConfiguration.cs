@@ -16,6 +16,27 @@ namespace CardComApi.Profiles
             CreateMap<Person, CreatePersonRequest>();
             CreateMap<CreatePersonRequest, Person>();
             CreateMap<Person, GetPersonResponse>();
+            CreateMap<UpdatePersonRequest, Person>()
+            .ForMember(dest => dest.IdNumber, opt =>
+            {
+                opt.Condition((src, dest) => src.IdNumber != null && src.IdNumber != "");
+                opt.MapFrom(src => src.IdNumber);
+            })
+            .ForMember(dest => dest.Name, opt =>
+               {
+                   opt.Condition((src, dest) => src.Name != null && src.Name != "");
+                   opt.MapFrom(src => src.IdNumber);
+               })
+            .ForMember(dest => dest.PhoneNumber, opt =>
+            {
+                opt.Condition((src, dest) => src.Number != null);
+                opt.MapFrom(src => src.Number);
+            })
+            .ForMember(dest => dest.BirthDate, opt =>
+            {
+                opt.Condition((src, dest) => src.Birthdate != null);
+                opt.MapFrom(src => src.Birthdate);
+            });
         }
     }
 }

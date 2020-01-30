@@ -55,5 +55,33 @@ namespace CardComApi.API.V1
             }
         }
 
+        [Route("{id:long}")]
+        [HttpDelete]
+        public async Task<ApiResponse> Delete(int id)
+        {
+            if (await _personManager.DeleteAsync(id))
+                return new ApiResponse($"Record with Id: {id} sucessfully deleted.", true);
+            else
+                throw new ApiException($"Record with id: {id} does not exist.", Status404NotFound);
+        }
+
+        [Route("{id:long}")]
+        [HttpPut]
+        public async Task<ApiResponse> Put(int id, [FromBody] UpdatePersonRequest dto)
+        {
+            if (ModelState.IsValid)
+            {
+                var person = _mapper.Map<Person>(dto);
+                person.Id = id;
+
+                if (await _personManager.UpdateAsync(person))
+                    return new ApiResponse($"Record with Id: {id} sucessfully updated.", true);
+                else
+                    throw new ApiException($"Record with Id: {id} does not exist.", Status404NotFound);
+            }
+            else
+                throw new ApiException(ModelState.AllErrors());
+        }
+
     }
 }

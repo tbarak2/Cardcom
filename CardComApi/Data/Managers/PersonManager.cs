@@ -2,6 +2,7 @@
 using CardComApi.Data.Context;
 using CardComApi.Data.Entity;
 using CardComApi.Data.General;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +24,22 @@ namespace CardComApi.Data.Managers
             return response;
         }
 
-        public Task<bool> DeleteAsync(object id)
+        public async Task<bool> DeleteAsync(object id)
         {
-            throw new NotImplementedException();
+            var isDeleted = false;
+            var person = _context.Person.Find(id);
+            if(person != null)
+            {
+                var bl = _context.Person.Remove(person);
+                if(await _context.SaveChangesAsync().ConfigureAwait(false) > 0)
+                {
+                    isDeleted = true;
+                }
+
+            }
+
+            return isDeleted;
+
         }
 
         public async Task<IEnumerable<Person>> GetAllAsync()
@@ -44,9 +58,40 @@ namespace CardComApi.Data.Managers
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateAsync(Person entity)
+        public async Task<bool> UpdateAsync(Person entity)
         {
-            throw new NotImplementedException();
+            var isUpdated = false;
+            var person = await _context.Person.FindAsync(entity.Id);//FirstOrDefault(p => p.Id == entity.Id);
+            _context.Entry(person).State = EntityState.Detached;
+            _context.Person.Update(entity);
+            if(await _context.SaveChangesAsync() > 0)
+            {
+                isUpdated = true;
+            }
+            //_context.Attach(entity);
+            //if (person != null)
+            //{
+            //    if(entity.IdNumber != null && entity.IdNumber  != person.IdNumber)
+            //    {
+            //        _context.Entry(person).Property("IdNumber").IsModified = true;
+            //    }
+            //   // person = entity;
+            //    //_context.Entry<Person>(person).State = EntityState.Detached;
+            //    _context.Person.Update(entity);
+            //    if (await _context.SaveChangesAsync() > 0)
+            //    {
+            //        isUpdated = true;
+            //    }
+            //}
+            return isUpdated;
+            //if(person != null)
+            //{
+            //    //if(entity.IdNumber == null)
+            //    //{
+            //    //    entity.IdNumber = 
+            //    //}
+            //}
+            //throw new NotImplementedException();
         }
     }
 }
