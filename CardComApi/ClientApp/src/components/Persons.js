@@ -1,6 +1,6 @@
 ﻿import React, { Component } from 'react';
 
-export class PeronsData_old extends Component {
+export class PeronsData extends Component {
     static displayName = PeronsData.name;
 
     constructor(props) {
