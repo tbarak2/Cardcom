@@ -18,7 +18,7 @@ namespace CardComApi.Data.Dto.Requests
         public DateTime? Birthdate { get; set; }
 
         [Phone]
-        [RegularExpression("[^0-9]", ErrorMessage = "Phone Number Must Have Only Numbers")]
+        [Range(0, Int64.MaxValue, ErrorMessage = "Id number should not contain characters")]
         public string Number { get; set; }
 
         public string Gender { get; set; }

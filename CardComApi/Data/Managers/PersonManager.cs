@@ -27,8 +27,9 @@ namespace CardComApi.Data.Managers
         public async Task<bool> DeleteAsync(object id)
         {
             var isDeleted = false;
-            var person = _context.Person.Find(id);
-            if(person != null)
+            //var person = _context.Person.FirstOrDefault(p => p.IdNumber == id);
+            var person = await _context.Person.FindAsync(id);
+            if (person != null)
             {
                 var bl = _context.Person.Remove(person);
                 if(await _context.SaveChangesAsync().ConfigureAwait(false) > 0)
@@ -61,12 +62,17 @@ namespace CardComApi.Data.Managers
         public async Task<bool> UpdateAsync(Person entity)
         {
             var isUpdated = false;
+            //ar person = await _context.Person.FirstOrDefaultAsync(p=>p.IdNumber == entity.IdNumber);//FirstOrDefault(p => p.Id == entity.Id);
             var person = await _context.Person.FindAsync(entity.Id);//FirstOrDefault(p => p.Id == entity.Id);
-            _context.Entry(person).State = EntityState.Detached;
-            _context.Person.Update(entity);
-            if(await _context.SaveChangesAsync() > 0)
+            if (person != null)
             {
-                isUpdated = true;
+                entity.Id = person.Id;
+                _context.Entry(person).State = EntityState.Detached;
+                _context.Person.Update(entity);
+                if (await _context.SaveChangesAsync() > 0)
+                {
+                    isUpdated = true;
+                }
             }
             //_context.Attach(entity);
             //if (person != null)

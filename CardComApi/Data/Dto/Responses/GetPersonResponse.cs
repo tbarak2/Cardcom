@@ -7,6 +7,7 @@ namespace CardComApi.Data.Dto.Responses
 {
     public class GetPersonResponse
     {
+        public int Id { get; set; }
         public string IdNumber { get; set; }
         public string Name { get; set; }
         public DateTime Birthdate { get; set; }

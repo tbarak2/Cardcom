@@ -33,14 +33,34 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\src\components\**" />
+    <Compile Remove="Controllers\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\src\components\**" />
+    <Content Remove="Controllers\**" />
+    <EmbeddedResource Remove="ClientApp\src\components\**" />
+    <EmbeddedResource Remove="Controllers\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="ClientApp\src\components\**" />
+    <None Remove="Controllers\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="ClientApp\src\App_old.js" />
     <None Remove="ClientApp\src\App_old.test.js" />
+    <None Remove="ClientApp\src\components\Counter.js" />
+    <None Remove="ClientApp\src\components\EditPerson.js" />
+    <None Remove="ClientApp\src\components\FetchData.js" />
+    <None Remove="ClientApp\src\components\Home.js" />
+    <None Remove="ClientApp\src\components\Layout.js" />
+    <None Remove="ClientApp\src\components\NavMenu.css" />
+    <None Remove="ClientApp\src\components\NavMenu.js" />
+    <None Remove="ClientApp\src\components\PersonDetail.js" />
+    <None Remove="ClientApp\src\components\PersonItem.js" />
+    <None Remove="ClientApp\src\components\PersonList.js" />
+    <None Remove="ClientApp\src\components\Persons.js" />
+    <None Remove="ClientApp\src\components\PersonsData.js" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

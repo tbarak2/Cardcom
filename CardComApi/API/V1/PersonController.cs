@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using AutoWrapper.Extensions;
 using AutoWrapper.Wrappers;
 using CardComApi.Contracts;
-using CardComApi.Data.Context;
 using CardComApi.Data.Dto.Requests;
 using CardComApi.Data.Dto.Responses;
 using CardComApi.Data.Entity;
-using CardComApi.Data.Managers;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace CardComApi.API.V1
@@ -24,7 +19,7 @@ namespace CardComApi.API.V1
         //private PersonContext _context
         private IPersonManager _personManager;
         private IMapper _mapper;
-        public PersonController(IPersonManager personManager,IMapper mapper)
+        public PersonController(IPersonManager personManager, IMapper mapper)
         {
             _personManager = personManager;
             _mapper = mapper;
@@ -73,7 +68,6 @@ namespace CardComApi.API.V1
             {
                 var person = _mapper.Map<Person>(dto);
                 person.Id = id;
-
                 if (await _personManager.UpdateAsync(person))
                     return new ApiResponse($"Record with Id: {id} sucessfully updated.", true);
                 else
@@ -85,6 +79,6 @@ namespace CardComApi.API.V1
 
         //todo:Adding get wuth pageing.
         //Todo:Fix the update!!
-    
+
     }
 }

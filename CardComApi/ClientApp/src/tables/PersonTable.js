@@ -16,7 +16,7 @@ const PersonTable = (props) => (
         <tbody>
             {props.persons.length > 0 ? (
                 props.persons.map(person => (
-                    <tr key={person.idNumber}>
+                    <tr key={person.id}>
                         <td>{person.idNumber}</td>
 
                         <td>{person.name}</td>
@@ -25,8 +25,8 @@ const PersonTable = (props) => (
                         <td>{person.gender}</td>
                         <td>{person.number}</td>
                         <td>
-                            <button className="button muted-button">Edit</button>
-                            <button className="button muted-button">Delete</button>
+                            <button onClick={() => {props.editRow(person)}} className="button muted-button">Edit</button>
+                            <button onClick={() => props.deletePerson(person.id)} className="button muted-button">Delete</button>
                         </td>
                     </tr>))) : (
                     <tr>
