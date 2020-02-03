@@ -1,12 +1,14 @@
-﻿import React, { useState } from 'react'
+﻿import React, { useState } from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import validator from 'validator';
+import { useAlert } from 'react-alert';
+import { inputValidator } from '../utils/utils'
 
 const AddPersonForm = props => {
     const initialFormState = { idNumber: '', name: '', email: '', birthdate: '', gender: '', number: '' };
     const initialErrorFormState = { email: '', number: '', name: '', date: '', idnumber: ''};
-
+    const alert = useAlert()
     const [person, setPerson] = useState(initialFormState);
     const [errors, setError] = useState(initialErrorFormState)
     const [startDate, setStartDate] = useState(new Date());
@@ -37,23 +39,34 @@ const AddPersonForm = props => {
 
         return [year, month, day].join('-');
     }
-    const inputValidator = (person) => {
-        if (!person.idNumber) {
-            setError({ ...errors, ['idNumber']: 'Id number is missing' });
-            return false;
-        }
+    //const inputValidator = (person) => {
+    //    if (!person.idNumber) {
+    //        setError({ ...errors, ['idNumber']: 'Id number is missing' });
+    //        alert.show('Id number is missing');
+    //        return false;
+    //    }
+    //    if (!person.name) {
+    //        setError({ ...errors, ['nme']: 'Name is missing' });
+    //        alert.show('Name is missing');
+    //        return false;
+    //    }
        
-    }
+    //}
     return (
         <form
             onSubmit={event => {
                 event.preventDefault()
-                if (!person.idNumber || !person.name || !person.birthdate) {
+                //if (!person.idNumber || !person.name || !person.birthdate) {
 
-                    if (!validator.isEmail(person.email)) {
-                        setError({ ...errors, ['email']: 'Email address not valid' });
-                        return;
-                    }
+                //    if (!validator.isEmail(person.email)) {
+                //        setError({ ...errors, ['email']: 'Email address not valid' });
+                //        return;
+                //    }
+                //}
+                var messageError = inputValidator(person);
+                if (messageError) {
+                    alert.show(messageError);
+                    return;
                 }
                 props.addPerson(person)
                 setPerson(initialFormState)

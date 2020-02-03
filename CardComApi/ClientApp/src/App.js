@@ -1,11 +1,12 @@
 ﻿import React, { useState, useEffect } from "react";
+import { useAlert } from 'react-alert'
 import AddPersonForm from './forms/AddPersonForm'
 import EditPersonForm from './forms/EditPersonForm'
 import PersonTable from './tables/PersonTable'
 import axios from 'axios';  
 
 const App = () => {
-
+    const alert = useAlert()
     const initialFormState = { id: '', updatePersonidNumber: '', name: '', email: '', birthdate: '', gender: '', number: '' };
     const initialErrorState = { idNumber: ''};
     const [isLoading, setIsLoading] = useState(true);
@@ -31,10 +32,12 @@ const App = () => {
     }
 
     const addPerson = person => {
-            setErrorMessage(initialErrorState);
+            //setErrorMessage(initialErrorState);
         if (persons.map(p => person.idNumber === p.idNumber)) {
             setErrorMessage({ ...errorMessages, ['idNumber']: 'Id already exist!!' });
-        } else {
+            alert.show('Id number already exist!!')
+        }
+        else {
             axios.post("https://localhost:44334/api/v1/Person", person)
                 .then((result) => {
                     setPersons([...persons, person])
@@ -66,7 +69,7 @@ const App = () => {
 
     return (
         <div className="container">
-            <div>{errorMessages.idNumber}</div>
+
             <div className="flex-row">
                 {editing ? (
                     <div>
